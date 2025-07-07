@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashLens.ai</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" type="image/png" href="/static/images/favicon_gear.png">
+    
+    <style>
+        /* Custom adjustments for hero section */
+        .hero {
+            padding-top: 20px;
+        }
+        /* Adjust image size and position */
+        .hero-image img {
+            display: block;
+            width: auto;
+            max-width: 90%;
+            min-height: 450px;
+            max-height: 480px;
+            margin: 0 auto;
+            padding: 0;
+            object-fit: contain;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 20px 30px -5px rgba(0, 112, 74, 0.45);
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="" style="text-decoration:none; font-weight: 700; color: white; letter-spacing: 0.5px;">
+                        <img src="/static/images/favicon_gear.png" alt="CashLens Icon" class="nav-icon">
+                        CashLens.ai
+                    </a>
+                </div>
+                <div class="nav-links" id="navLinks">
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#testimonials">Testimonials</a>
+                    <a href="#about">About</a>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a href="#download" class="cta-button">Download App</a>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Identify Pakistani Currency with a Single Tap</h1>
+                <p>CashLens.ai uses advanced AI to instantly recognize and identify Pakistani rupee notes, making financial transactions accessible for everyone, including the visually impaired.</p>
+                <a href="/upload" class="cta-button">Get Started</a>
+            </div>
+            <div class="hero-image">
+                <img src="/static/images/CashLens-image - Copy.png" alt="CashLens App Demo" class="app-mockup">
+            </div>
+        </div>
+    </section>
+    
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <p class="section-description">CashLens.ai offers a range of features designed to make currency identification simple, fast, and accessible to everyone.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Instant Recognition</h3>
+                    <p>Identify Pakistani rupee notes in real-time with over 99% accuracy using our advanced AI technology.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔊</div>
+                    <h3 class="feature-title">Voice Feedback</h3>
+                    <p>Get immediate voice announcements of the detected currency, perfect for visually impaired users.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Works Offline</h3>
+                    <p>No internet connection needed after initial setup, making it reliable anywhere in Pakistan.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">Multi-Language</h3>
+                    <p>Support for Urdu, English, and other regional Pakistani languages for inclusive accessibility.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Privacy-Focused</h3>
+                    <p>All processing happens locally on your device, ensuring your financial privacy is maintained.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Fast & Intuitive</h3>
+                    <p>Simple interface designed for quick access and ease of use, even for first-time users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-description">Using CashLens.ai is as simple as 1-2-3. Our app makes currency identification effortless.</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Open the App</h3>
+                    <p>Launch CashLens.ai on your smartphone and grant camera access when prompted.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Scan the Note</h3>
+                    <p>Point your camera at the Pakistani currency note you want to identify.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Get Results</h3>
+                    <p>Receive instant visual and audio feedback about the denomination of the note.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Users Say</h2>
+            
+            <div class="testimonial-slider" id="testimonialSlider">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"CashLens.ai has completely changed how I handle money. As someone with visual impairment, I can now independently identify Pakistani currency. It's liberating!"</p>
+                    <p class="testimonial-author">- Ahmed K., Karachi</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The accuracy is impressive. I've tested it with worn-out notes, and it still identifies them correctly. A must-have app for everyone in Pakistan."</p>
+                    <p class="testimonial-author">- Fatima S., Lahore</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"As a teacher working with visually impaired students, this app has been invaluable for teaching financial independence. The voice feedback feature is excellent."</p>
+                    <p class="testimonial-author">- Yusuf M., Islamabad</p>
+                </div>
+            </div>
+            
+            <div class="slider-controls">
+                <button class="slider-button prev" id="prevButton">❮</button>
+                <button class="slider-button next" id="nextButton">❯</button>
+            </div>
+        </div>
+    </section>
+    
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">About CashLens.ai</h2>
+            <p class="section-description mission-quote">"We're on a mission to make financial accessibility a reality for everyone in Pakistan, regardless of visual ability."</p>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Story</h3>
+                    <p>Founded in 2024, CashLens.ai began with a simple vision: to create technology that serves everyone, especially those with visual impairments. Our team of AI specialists, accessibility experts, and developers came together to build a solution that makes currency identification simple and accessible.</p>
+                    <p>Today, we're proud to offer the most accurate Pakistani currency recognition app available, helping thousands of users across the country gain financial independence.</p>
+                </div>
+                <div class="about-image">
+                    <img src="/static/images/cash_lens_team.jpeg" alt="CashLens Team">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="download" id="download">
+        <div class="container">
+            <h2 class="section-title">Download CashLens.ai Today</h2>
+            <p class="section-description">Get started with CashLens.ai in seconds. Available for both iOS and Android devices.</p>
+            
+            <div class="download-center">
+                <div class="download-buttons">
+                    <a href="#" class="store-button app-store">
+                        <div>
+                            <span>Download on the</span>
+                            <strong>App Store</strong>
+                        </div>
+                    </a>
+                    <a href="#" class="store-button google-play">
+                        <div>
+                            <span>Get it on</span>
+                            <strong>Google Play</strong>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="qr-codes">
+                    <div class="qr-item">
+                        <img src="/static/images/QR.png" alt="iOS QR Code">
+                        <p>Scan for iOS</p>
+                    </div>
+                    <div class="qr-item">
+                        <img src="/static/images/QR.png" alt="Android QR Code">
+                        <p>Scan for Android</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="footer-title">CashLens.ai</h3>
+                    <p>Making Pakistani currency identification accessible for everyone through innovative AI technology.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#download">Download</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2025 CashLens.ai. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

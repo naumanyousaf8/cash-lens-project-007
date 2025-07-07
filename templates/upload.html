@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashLens.ai - Currency Upload</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" type="image/png" href="/static/images/favicon_gear.png">
+    <style>
+        /* Upload page specific styles */
+        .upload-section {
+            padding: 60px 0;
+            min-height: calc(100vh - 230px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-section::before {
+            content: none;
+            /* If content is enabled in the future, use the new image:
+            background: url('CashLens-image - Copy.png') no-repeat center center;
+            */
+        }
+        
+        .upload-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin: 0 auto;
+        }
+        
+        .upload-title {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .upload-description {
+            margin-bottom: 30px;
+            color: var(--dark-gray);
+            font-size: 18px;
+        }
+        
+        .drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 25px;
+            position: relative;
+            background-color: transparent;
+        }
+        
+        .drop-area.drag-over {
+            border-color: var(--accent-color);
+            background-color: rgba(46, 139, 192, 0.05);
+            transform: scale(1.02);
+        }
+        
+        .drop-area.active {
+            border-color: var(--secondary-color);
+        }
+        
+        .drop-area.error {
+            border-color: #ff3b30;
+            animation: shake 0.5s linear;
+        }
+        
+        .drop-message {
+            margin-bottom: 20px;
+        }
+        
+        .drop-message p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        
+        .drop-message p:first-child {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .preview-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .preview-container img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--dark-gray);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+            justify-content: center;
+        }
+        
+        .secondary-button {
+            background-color: #e0e0e0;
+            color: var(--dark-gray);
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .secondary-button:hover {
+            background-color: #d0d0d0;
+            transform: translateY(-2px);
+        }
+        
+        .cta-button {
+            padding: 12px 28px;
+            font-size: 16px;
+        }
+        
+        .results-container {
+            display: none;
+            margin-top: 35px;
+            padding: 25px;
+            border-radius: 15px;
+            background-color: var(--light-gray);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .result-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .result-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .result-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .result-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .detail-item {
+            background-color: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            text-align: left;
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .detail-item h4 {
+            font-size: 14px;
+            color: var(--medium-gray);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        
+        .detail-item p {
+            font-size: 16px;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+        
+        .currency-image {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 8px;
+            margin: 10px auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Loading Animation */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="/" style="text-decoration:none; font-weight: 700; color: white; letter-spacing: 0.5px;">
+                        <img src="/static/images/favicon_gear.png" alt="CashLens Icon" class="nav-icon">
+                        CashLens.ai
+                    </a>
+                </div>
+                <div class="nav-links" id="navLinks">
+                    <a href="/#features">Features</a>
+                    <a href="/#how-it-works">How It Works</a>
+                    <a href="/#testimonials">Testimonials</a>
+                    <a href="/#about">About</a>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a href="/#download" class="cta-button">Download App</a>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="upload-section">
+        <div class="container">
+            <div class="upload-container">
+                <h2 class="upload-title">Pakistani Currency Identification</h2>
+                <p class="upload-description">Upload an image of any Pakistani currency note to instantly identify its value and details</p>
+                
+                <div class="drop-area" id="dropArea">
+                    <div class="drop-message">
+                        <p>Drag & Drop your currency image here</p>
+                        <p>or</p>
+                        <button class="secondary-button" id="browseBtn">Browse Files</button>
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="preview-container" id="previewContainer">
+                        <img id="imagePreview" src="" alt="Preview">
+                        <div class="file-info">
+                            <span id="fileName"></span>
+                            <button class="secondary-button" id="removeBtn">Remove</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="resultContainer" style="display: none;"></div>
+                
+                <div class="action-buttons">
+                    <button class="secondary-button" id="removeBtn">Remove Image</button>
+                    <button class="cta-button" id="processBtn">Identify Currency</button>
+                </div>
+                
+                <div class="results-container">
+                    <div class="result-info">
+                        <div class="result-icon">💵</div>
+                        <div class="result-title"></div>
+                        <p></p>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <h4>Country</h4>
+                                <p>Pakistan</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Confidence</h4>
+                                <p>98.7%</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Value</h4>
+                                <p>PKR</p>
+                            </div>
+                            <div class="detail-item">
+                                <h4>Equivalent</h4>
+                                <p>USD</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="footer-title">CashLens.ai</h3>
+                    <p>Making Pakistani currency identification accessible for everyone through innovative AI technology.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/#features">Features</a></li>
+                        <li><a href="/#how-it-works">How It Works</a></li>
+                        <li><a href="/#testimonials">Testimonials</a></li>
+                        <li><a href="/#about">About Us</a></li>
+                        <li><a href="/#download">Download</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2025 CashLens.ai. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    document.body.classList.toggle('mobile-menu-open');
+                    
+                    // Animate the menu button
+                    const spans = this.querySelectorAll('span');
+                    if (document.body.classList.contains('mobile-menu-open')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -8px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+            }
+            
+            // Close mobile menu when clicking on a link
+            if (navLinks) {
+                const links = navLinks.querySelectorAll('a');
+                links.forEach(link => {
+                    link.addEventListener('click', function() {
+                        document.body.classList.remove('mobile-menu-open');
+                        if (mobileMenuBtn) {
+                            const spans = mobileMenuBtn.querySelectorAll('span');
+                            spans[0].style.transform = 'none';
+                            spans[1].style.opacity = '1';
+                            spans[2].style.transform = 'none';
+                        }
+                    });
+                });
+            }
+            
+            // File Upload Functionality
+            const dropArea = document.getElementById('dropArea');
+            const fileInput = document.getElementById('fileInput');
+            const browseBtn = document.getElementById('browseBtn');
+            const imagePreview = document.getElementById('imagePreview');
+            const previewContainer = document.getElementById('previewContainer');
+            const dropMessage = document.querySelector('.drop-message');
+            const fileName = document.getElementById('fileName');
+            const processBtn = document.getElementById('processBtn');
+            const removeBtn = document.getElementById('removeBtn');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            // Prevent default behavior for drag events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                if (dropArea) {
+                    dropArea.addEventListener(eventName, preventDefaults, false);
+                }
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            // Highlight drop area when dragging file over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                if (dropArea) {
+                    dropArea.addEventListener(eventName, highlight, false);
+                }
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                if (dropArea) {
+                    dropArea.addEventListener(eventName, unhighlight, false);
+                }
+            });
+            
+            function highlight() {
+                if (dropArea) {
+                    dropArea.classList.add('drag-over');
+                }
+            }
+            
+            function unhighlight() {
+                if (dropArea) {
+                    dropArea.classList.remove('drag-over');
+                }
+            }
+            
+            // Handle dropped files
+            if (dropArea) {
+                dropArea.addEventListener('drop', handleDrop, false);
+            }
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length) {
+                    handleFiles(files);
+                }
+            }
+            
+            if (browseBtn) {
+                browseBtn.addEventListener('click', function() {
+                    if (fileInput) {
+                        fileInput.click();
+                    }
+                });
+            }
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', function() {
+                    if (this.files.length) {
+                        handleFiles(this.files);
+                    }
+                });
+            }
+            
+            function handleFiles(files) {
+                const file = files[0];
+                
+                // Check if the file is an image
+                if (!file.type.match('image.*')) {
+                    if (dropArea) {
+                        dropArea.classList.add('error');
+                        setTimeout(() => {
+                            dropArea.classList.remove('error');
+                        }, 3000);
+                    }
+                    return;
+                }
+                
+                if (fileName) {
+                    fileName.textContent = file.name;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    if (imagePreview) {
+                        imagePreview.src = e.target.result;
+                    }
+                    
+                    if (dropMessage) {
+                        dropMessage.style.display = 'none';
+                    }
+                    
+                    if (previewContainer) {
+                        previewContainer.style.display = 'flex';
+                    }
+                    
+                    if (dropArea) {
+                        dropArea.classList.add('active');
+                    }
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            if (removeBtn) {
+                removeBtn.addEventListener('click', function() {
+                    if (fileInput) {
+                        fileInput.value = '';
+                    }
+                    
+                    if (imagePreview) {
+                        imagePreview.src = '';
+                    }
+                    
+                    if (dropMessage) {
+                        dropMessage.style.display = 'block';
+                    }
+                    
+                    if (previewContainer) {
+                        previewContainer.style.display = 'none';
+                    }
+                    
+                    if (dropArea) {
+                        dropArea.classList.remove('active');
+                    }
+                    
+                    const resultsContainer = document.querySelector('.results-container');
+                    if (resultsContainer) {
+                        resultsContainer.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Process image button
+            if (processBtn) {
+                processBtn.addEventListener('click', function() {
+                    // Check if an image is uploaded
+                    if (!imagePreview.src || !fileInput.files[0]) {
+                        alert('Please upload an image first.');
+                        return;
+                    }
+                    
+                    // Show loading overlay
+                    if (loadingOverlay) {
+                        loadingOverlay.style.display = 'flex';
+                    }
+                    
+                    // Create FormData to send the image to backend
+                    const formData = new FormData();
+                    formData.append('file', fileInput.files[0]);
+                    
+                    // Send image to backend for prediction
+                    fetch('/api/predict', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Hide loading overlay
+                        if (loadingOverlay) {
+                            loadingOverlay.style.display = 'none';
+                        }
+                        
+                        if (data.error) {
+                            // Handle error
+                            alert('Error: ' + data.error);
+                        } else {
+                            // Display results from backend
+                            displayResults(data);
+                        }
+                    })
+                    .catch(error => {
+                        // Hide loading overlay
+                        if (loadingOverlay) {
+                            loadingOverlay.style.display = 'none';
+                        }
+                        
+                        console.error('Error:', error);
+                        alert('Error connecting to server. Please make sure the backend is running.');
+                    });
+                });
+            }
+            
+            // Function to display results
+            function displayResults(data) {
+                const resultsContainer = document.querySelector('.results-container');
+                
+                if (resultsContainer) {
+                    // Update the result container content
+                    const resultTitle = resultsContainer.querySelector('.result-title');
+                    const resultDesc = resultsContainer.querySelector('.result-info > p');
+                    
+                    if (resultTitle) {
+                        resultTitle.textContent = data.currency;
+                        resultTitle.style.color = data.valid ? '#00704a' : '#ff9500';
+                    }
+                    
+                    if (resultDesc) {
+                        resultDesc.textContent = `Confidence: ${data.confidence}%`;
+                    }
+                    
+                    // Update detail items
+                    const detailItems = resultsContainer.querySelectorAll('.detail-item');
+                    if (detailItems.length >= 3) {
+                        // Update confidence
+                        detailItems[1].querySelector('h4').textContent = 'Confidence';
+                        detailItems[1].querySelector('p').textContent = data.confidence + '%';
+                        
+                        // Update value
+                        detailItems[2].querySelector('h4').textContent = 'Value';
+                        detailItems[2].querySelector('p').textContent = data.currency;
+                        
+                        // Add status if there are more detail items
+                        if (detailItems.length > 3) {
+                            detailItems[3].querySelector('h4').textContent = 'Status';
+                            detailItems[3].querySelector('p').textContent = data.valid ? 'Valid Note' : 'Uncertain';
+                        }
+                    }
+                    
+                    // Update result icon
+                    const resultIcon = resultsContainer.querySelector('.result-icon');
+                    if (resultIcon) {
+                        resultIcon.textContent = data.valid ? '💵' : '⚠️';
+                    }
+                    
+                    // Add voice feedback if supported
+                    if ('speechSynthesis' in window && data.valid) {
+                        const utterance = new SpeechSynthesisUtterance(`Detected ${data.currency} with ${data.confidence} percent confidence`);
+                        utterance.rate = 0.8;
+                        speechSynthesis.speak(utterance);
+                    }
+                    
+                    // Show results
+                    resultsContainer.style.display = 'block';
+                    resultsContainer.classList.add('animate-fadeIn');
+                }
+            }
+            
+            // Smooth scrolling for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
